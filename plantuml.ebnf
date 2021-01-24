@@ -9,20 +9,24 @@ WS: " " | "\t"
 state_diagram: ( state_block | transition | state_action | note | "\n")*
 
 
-transition: STATE ("->" | "-->" | "-left->" | "-right->" | "-up->" | "-down->") STATE (":" event? GUARD? action?)? "\n"
+transition: STATE _ARROW STATE (":" event? GUARD? ACTION?)? "\n"
+_ARROW: "->" | "-->" | "-left->" | "-right->" | "-up->" | "-down->"
+
 ?state_action: state_entry | state_idle | state_exit
-state_entry: STATE ":" "**entry**" action "\n"
-state_idle: STATE ":" "**idle**" action "\n"
-state_exit: STATE ":" "**exit**" action "\n"
+state_entry: STATE ":" "**entry**" ACTION "\n"
+state_idle: STATE ":" "**idle**" ACTION "\n"
+state_exit: STATE ":" "**exit**" ACTION "\n"
 
 note: "note" side "of" STATE "\n" /.+/ "\n" "end" "note" "\n"
 
 STATE: "[*]" | CNAME
 event: CNAME | time_event
-time_event: "at" ":" FREE_TEXT
-    | "after" ":" FREE_TEXT
+?time_event: ABSOLUTE_TIME_EVENT | RELATIVE_TIME_EVENT
+ABSOLUTE_TIME_EVENT: "at" ":" FREE_TEXT
+RELATIVE_TIME_EVENT: "after" ":" FREE_TEXT
+
 GUARD: "[" FREE_TEXT "]"
-action: "/" FREE_TEXT
+ACTION: "/" FREE_TEXT
 
 state_block: "state" STATE "{" "\n" state_diagram "}" "\n"
 
