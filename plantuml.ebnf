@@ -1,0 +1,33 @@
+start: "@startuml" CNAME? "\n" state_diagram "@enduml"
+
+WS: " " | "\t"
+%ignore WS
+
+//-----------------------------------------------------------------------------
+// State Diagram
+//-----------------------------------------------------------------------------
+state_diagram: ( state_block | transition | state_action | note | "\n")*
+
+
+transition: STATE ("->" | "-->" | "-left->" | "-right->" | "-up->" | "-down->") STATE (":" event? GUARD? action?)? "\n"
+?state_action: state_entry | state_idle | state_exit
+state_entry: STATE ":" "**entry**" action "\n"
+state_idle: STATE ":" "**idle**" action "\n"
+state_exit: STATE ":" "**exit**" action "\n"
+
+note: "note" side "of" STATE "\n" /.+/ "\n" "end" "note" "\n"
+
+STATE: "[*]" | CNAME
+event: CNAME | time_event
+time_event: "at" ":" FREE_TEXT
+    | "after" ":" FREE_TEXT
+GUARD: "[" FREE_TEXT "]"
+action: "/" FREE_TEXT
+
+state_block: "state" STATE "{" "\n" state_diagram "}" "\n"
+
+FREE_TEXT: /.+/
+?side: "left" -> left
+    | "right" -> right
+
+%import common.CNAME
