@@ -9,13 +9,13 @@ WS: " " | "\t"
 state_diagram: ( state_block | transition | state_action | note | "\n")*
 
 
-transition: STATE _ARROW STATE (":" event? GUARD? ACTION?)? "\n"
+transition: STATE _ARROW STATE (":" event? GUARD? action?)? "\n"
 _ARROW: "->" | "-->" | "-left->" | "-right->" | "-up->" | "-down->"
 
-?state_action: state_entry | state_idle | state_exit
-state_entry: STATE ":" "**entry**" ACTION "\n"
-state_idle: STATE ":" "**idle**" ACTION "\n"
-state_exit: STATE ":" "**exit**" ACTION "\n"
+?state_action: state_entry | state_do | state_exit
+state_entry: STATE ":" "**entry**" action "\n"
+state_do: STATE ":" "**idle**" action "\n"
+state_exit: STATE ":" "**exit**" action "\n"
 
 note: "note" side "of" STATE "\n" /.+/ "\n" "end" "note" "\n"
 
@@ -26,7 +26,7 @@ ABSOLUTE_TIME_EVENT: "at" ":" FREE_TEXT
 RELATIVE_TIME_EVENT: "after" ":" FREE_TEXT
 
 GUARD: "[" FREE_TEXT "]"
-ACTION: "/" FREE_TEXT
+action: "/" FREE_TEXT
 
 state_block: "state" STATE "{" "\n" state_diagram "}" "\n"
 
