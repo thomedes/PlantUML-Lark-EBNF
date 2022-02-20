@@ -1,0 +1,89 @@
+@startuml
+scale 600 width
+
+[*] -> State1
+State1 --> State2 : Succeeded
+State1 --> [*] : Aborted
+State2 --> State3 : Succeeded
+State2 --> [*] : Aborted
+state State3 {
+  state "Accumulate Enough Data\nLong State Name" as long1
+  long1 : Just a test
+  [*] --> long1
+  long1 --> long1 : New Data
+  long1 --> ProcessData : Enough Data
+}
+State3 --> State3 : Failed
+State3 --> [*] : Succeeded / Save Result
+State3 --> [*] : Aborted
+
+@enduml
+
+////////////////////////////
+
+start
+  scale 600
+  state_diagram
+    transition
+      departure_state   [*]
+      arrow     ->
+      arrival_state     State1
+    transition
+      departure_state   State1
+      arrow     -->
+      arrival_state     State2
+      string    Succeeded
+    transition
+      departure_state   State1
+      arrow     -->
+      arrival_state     [*]
+      string    Aborted
+    transition
+      departure_state   State2
+      arrow     -->
+      arrival_state     State3
+      string    Succeeded
+    transition
+      departure_state   State2
+      arrow     -->
+      arrival_state     [*]
+      string    Aborted
+    state
+      state_name        State3
+      state_block
+        state_diagram
+          state
+            state_long_name     "Accumulate Enough Data\nLong State Name"
+            state_name  long1
+          state_string
+            state_name  long1
+            string      Just a test
+          transition
+            departure_state     [*]
+            arrow       -->
+            arrival_state       long1
+          transition
+            departure_state     long1
+            arrow       -->
+            arrival_state       long1
+            string      New Data
+          transition
+            departure_state     long1
+            arrow       -->
+            arrival_state       ProcessData
+            string      Enough Data
+    transition
+      departure_state   State3
+      arrow     -->
+      arrival_state     State3
+      string    Failed
+    transition
+      departure_state   State3
+      arrow     -->
+      arrival_state     [*]
+      string    Succeeded / Save Result
+    transition
+      departure_state   State3
+      arrow     -->
+      arrival_state     [*]
+      string    Aborted

@@ -1,0 +1,138 @@
+start: _diagram
+
+WS: " " | "\t" | "\n"
+%ignore WS
+
+_eol: "\n"
+
+_diagram: ( _uml_diagram
+         | salt_diagram
+         | gantt_diagram
+         | mindmap_diagram
+         | wbs_diagram )
+
+// ----------------------------------------------------------------------------
+//  TODO All this needs to be done
+// ----------------------------------------------------------------------------
+
+salt_diagram:    "@startsalt"    diagram_name? _eol wireframe_diagram "@endsalt"
+gantt_diagram:   "@startgantt"   diagram_name? _eol "FIXME" "@endgantt"
+mindmap_diagram: "@startmindmap" diagram_name? _eol "FIXME" "@endmindmap"
+wbs_diagram:     "@startwbs"     diagram_name? _eol "FIXME" "@endwbs"
+
+// The diagram name before FIXME only used to avoid collisions
+sequence_diagram:   "sequence      FIXME"
+usecase_diagram:    "usecase       FIXME"
+class_diagram:      "class         FIXME"
+activity_diagram:   "activity      FIXME"
+component_diagram:  "component     FIXME"
+object_diagram:     "object        FIXME"
+deployment_diagram: "deployment    FIXME"
+timing_diagram:     "timing        FIXME"
+network_diagram:    "network       FIXME"
+archimate_diagram:  "archimate     FIXME"
+wireframe_diagram:  "wireframe     FIXME"
+
+diagram_name: CNAME
+
+// ----------------------------------------------------------------------------
+//  UML diagrams
+// ----------------------------------------------------------------------------
+
+_uml_diagram:                           \
+     "@startuml" diagram_name? _eol     \
+     hide_empty_description?            \
+     scale?                             \
+     _uml_content                       \
+     "@enduml"
+
+hide_empty_description: "hide empty description" _eol
+
+scale: "scale" INT "width"
+
+_uml_content: ( sequence_diagram
+             | usecase_diagram
+             | class_diagram
+             | activity_diagram
+             | component_diagram
+             | state_diagram
+             | object_diagram
+             | deployment_diagram
+             | timing_diagram
+             | network_diagram
+             | archimate_diagram )
+
+arrow: ARROW
+ARROW:              \
+     "->"           \
+     | "--->"       \
+     | "-->"        \
+     | "-d->"       \
+     | "-do->"      \
+     | "-down->"    \
+     | "-l->"       \
+     | "-le->"      \
+     | "-left->"    \
+     | "-r->"       \
+     | "-ri->"      \
+     | "-right->"   \
+     | "-u->"       \
+     | "-up->"
+
+// ----------------------------------------------------------------------------
+//  State Diagram
+// ----------------------------------------------------------------------------
+state_diagram: ( transition | state | state_string | note | separator )*
+
+state: "state" (state_long_name "as")? state_name (string | state_block | "<<" state_type ">>")? _eol
+
+state_block: "{" _eol state_diagram "}"
+
+state_string: state_name string
+
+transition: departure_state arrow arrival_state ("<<" state_type ">>")? string?  _eol
+
+departure_state: STATE_NAME
+arrival_state: STATE_NAME "[H*]"?
+
+state_name: STATE_NAME
+string: ":" FREE_TEXT
+
+state_type: STATE_TYPE
+STATE_TYPE:              \
+     "choice"            \
+     | "end"             \
+     | "entryPoint"      \
+     | "exitPoint"       \
+     | "expansionInput"  \
+     | "expansionOutput" \
+     | "fork"            \
+     | "inputPin"        \
+     | "join"            \
+     | "outputPin"       \
+     | "sdlreceive"
+
+state_long_name: QUOTED_STRING
+note: "note" side "of" STATE_NAME _eol /.+/ _eol "end" "note" _eol
+
+separator: separator_horizontal | separator_vertical
+separator_horizontal: "--"
+separator_vertical: "||"
+
+STATE_NAME: "[*]" | "[H]" | CNAME
+
+_event: CNAME | time_event
+?time_event: ABSOLUTE_TIME_EVENT | RELATIVE_TIME_EVENT
+ABSOLUTE_TIME_EVENT: "at" ":" FREE_TEXT
+RELATIVE_TIME_EVENT: "after" ":" FREE_TEXT
+
+GUARD: CNAME
+
+FREE_TEXT: /[^ \t\n][^\n]*[^ \t\n]?/
+QUOTED_STRING: /"[^"]*"/
+
+?side: "left" -> left
+     | "right" -> right
+
+%import common.CNAME
+%import common.INT

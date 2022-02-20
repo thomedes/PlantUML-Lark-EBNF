@@ -1,0 +1,29 @@
+@startuml
+
+[*] -up-> First
+First -right-> Second
+Second --> Third
+Third -left-> Last
+
+@enduml
+
+////////////////////////////
+
+start
+  state_diagram
+    transition
+      departure_state   [*]
+      arrow     -up->
+      arrival_state     First
+    transition
+      departure_state   First
+      arrow     -right->
+      arrival_state     Second
+    transition
+      departure_state   Second
+      arrow     -->
+      arrival_state     Third
+    transition
+      departure_state   Third
+      arrow     -left->
+      arrival_state     Last

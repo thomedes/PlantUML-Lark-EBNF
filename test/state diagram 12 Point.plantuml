@@ -1,0 +1,61 @@
+@startuml
+state Somp {
+  state entry1 <<entryPoint>>
+  state entry2 <<entryPoint>>
+  state sin
+  entry1 --> sin
+  entry2 -> sin
+  sin -> sin2
+  sin2 --> exitA <<exitPoint>>
+}
+
+[*] --> entry1
+exitA --> Foo
+Foo1 -> entry2
+@enduml
+
+////////////////////////////
+
+start
+  state_diagram
+    state
+      state_name        Somp
+      state_block
+        state_diagram
+          state
+            state_name  entry1
+            state_type  entryPoint
+          state
+            state_name  entry2
+            state_type  entryPoint
+          state
+            state_name  sin
+          transition
+            departure_state     entry1
+            arrow       -->
+            arrival_state       sin
+          transition
+            departure_state     entry2
+            arrow       ->
+            arrival_state       sin
+          transition
+            departure_state     sin
+            arrow       ->
+            arrival_state       sin2
+          transition
+            departure_state     sin2
+            arrow       -->
+            arrival_state       exitA
+            state_type  exitPoint
+    transition
+      departure_state   [*]
+      arrow     -->
+      arrival_state     entry1
+    transition
+      departure_state   exitA
+      arrow     -->
+      arrival_state     Foo
+    transition
+      departure_state   Foo1
+      arrow     ->
+      arrival_state     entry2

@@ -1,0 +1,81 @@
+@startuml
+scale 350 width
+[*] --> NotShooting
+
+state NotShooting {
+  [*] --> Idle
+  Idle --> Configuring : EvConfig
+  Configuring --> Idle : EvConfig
+}
+
+state Configuring {
+  [*] --> NewValueSelection
+  NewValueSelection --> NewValuePreview : EvNewValue
+  NewValuePreview --> NewValueSelection : EvNewValueRejected
+  NewValuePreview --> NewValueSelection : EvNewValueSaved
+
+  state NewValuePreview {
+     State1 -> State2
+  }
+
+}
+@enduml
+
+////////////////////////////
+
+start
+  scale 350
+  state_diagram
+    transition
+      departure_state   [*]
+      arrow     -->
+      arrival_state     NotShooting
+    state
+      state_name        NotShooting
+      state_block
+        state_diagram
+          transition
+            departure_state     [*]
+            arrow       -->
+            arrival_state       Idle
+          transition
+            departure_state     Idle
+            arrow       -->
+            arrival_state       Configuring
+            string      EvConfig
+          transition
+            departure_state     Configuring
+            arrow       -->
+            arrival_state       Idle
+            string      EvConfig
+    state
+      state_name        Configuring
+      state_block
+        state_diagram
+          transition
+            departure_state     [*]
+            arrow       -->
+            arrival_state       NewValueSelection
+          transition
+            departure_state     NewValueSelection
+            arrow       -->
+            arrival_state       NewValuePreview
+            string      EvNewValue
+          transition
+            departure_state     NewValuePreview
+            arrow       -->
+            arrival_state       NewValueSelection
+            string      EvNewValueRejected
+          transition
+            departure_state     NewValuePreview
+            arrow       -->
+            arrival_state       NewValueSelection
+            string      EvNewValueSaved
+          state
+            state_name  NewValuePreview
+            state_block
+              state_diagram
+                transition
+                  departure_state       State1
+                  arrow ->
+                  arrival_state State2

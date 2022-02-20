@@ -1,0 +1,49 @@
+@startuml
+state A {
+  state X {
+  }
+  state Y {
+  }
+}
+
+state B {
+  state Z {
+  }
+}
+
+X --> Z
+Z --> Y
+@enduml
+
+////////////////////////////
+
+start
+  state_diagram
+    state
+      state_name        A
+      state_block
+        state_diagram
+          state
+            state_name  X
+            state_block
+              state_diagram
+          state
+            state_name  Y
+            state_block
+              state_diagram
+    state
+      state_name        B
+      state_block
+        state_diagram
+          state
+            state_name  Z
+            state_block
+              state_diagram
+    transition
+      departure_state   X
+      arrow     -->
+      arrival_state     Z
+    transition
+      departure_state   Z
+      arrow     -->
+      arrival_state     Y

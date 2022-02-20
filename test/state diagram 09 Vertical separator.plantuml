@@ -1,0 +1,77 @@
+@startuml
+[*] --> Active
+
+state Active {
+  [*] -> NumLockOff
+  NumLockOff --> NumLockOn : EvNumLockPressed
+  NumLockOn --> NumLockOff : EvNumLockPressed
+  ||
+  [*] -> CapsLockOff
+  CapsLockOff --> CapsLockOn : EvCapsLockPressed
+  CapsLockOn --> CapsLockOff : EvCapsLockPressed
+  ||
+  [*] -> ScrollLockOff
+  ScrollLockOff --> ScrollLockOn : EvCapsLockPressed
+  ScrollLockOn --> ScrollLockOff : EvCapsLockPressed
+}
+
+@enduml
+
+////////////////////////////
+
+start
+  state_diagram
+    transition
+      departure_state   [*]
+      arrow     -->
+      arrival_state     Active
+    state
+      state_name        Active
+      state_block
+        state_diagram
+          transition
+            departure_state     [*]
+            arrow       ->
+            arrival_state       NumLockOff
+          transition
+            departure_state     NumLockOff
+            arrow       -->
+            arrival_state       NumLockOn
+            string      EvNumLockPressed
+          transition
+            departure_state     NumLockOn
+            arrow       -->
+            arrival_state       NumLockOff
+            string      EvNumLockPressed
+          separator
+            separator_vertical
+          transition
+            departure_state     [*]
+            arrow       ->
+            arrival_state       CapsLockOff
+          transition
+            departure_state     CapsLockOff
+            arrow       -->
+            arrival_state       CapsLockOn
+            string      EvCapsLockPressed
+          transition
+            departure_state     CapsLockOn
+            arrow       -->
+            arrival_state       CapsLockOff
+            string      EvCapsLockPressed
+          separator
+            separator_vertical
+          transition
+            departure_state     [*]
+            arrow       ->
+            arrival_state       ScrollLockOff
+          transition
+            departure_state     ScrollLockOff
+            arrow       -->
+            arrival_state       ScrollLockOn
+            string      EvCapsLockPressed
+          transition
+            departure_state     ScrollLockOn
+            arrow       -->
+            arrival_state       ScrollLockOff
+            string      EvCapsLockPressed

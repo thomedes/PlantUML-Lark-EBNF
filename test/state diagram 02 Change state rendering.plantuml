@@ -1,0 +1,38 @@
+@startuml
+hide empty description
+[*] --> State1
+State1 --> [*]
+State1 : this is a string
+State1 : this is another string
+
+State1 -> State2
+State2 --> [*]
+@enduml
+
+////////////////////////////
+
+start
+  hide_empty_description
+  state_diagram
+    transition
+      departure_state   [*]
+      arrow     -->
+      arrival_state     State1
+    transition
+      departure_state   State1
+      arrow     -->
+      arrival_state     [*]
+    state_string
+      state_name        State1
+      string    this is a string
+    state_string
+      state_name        State1
+      string    this is another string
+    transition
+      departure_state   State1
+      arrow     ->
+      arrival_state     State2
+    transition
+      departure_state   State2
+      arrow     -->
+      arrival_state     [*]

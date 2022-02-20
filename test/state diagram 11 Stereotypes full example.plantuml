@@ -1,0 +1,81 @@
+@startuml
+state choice1 <<choice>>
+state fork1   <<fork>>
+state join2   <<join>>
+state end3    <<end>>
+
+[*]     --> choice1 : from start\nto choice
+choice1 --> fork1   : from choice\nto fork
+choice1 --> join2   : from choice\nto join
+choice1 --> end3    : from choice\nto end
+
+fork1   ---> State1 : from fork\nto state
+fork1   --> State2  : from fork\nto state
+
+State2  --> join2   : from state\nto join
+State1  --> [*]     : from state\nto end
+
+join2   --> [*]     : from join\nto end
+@enduml
+
+////////////////////////////
+
+start
+  state_diagram
+    state
+      state_name        choice1
+      state_type        choice
+    state
+      state_name        fork1
+      state_type        fork
+    state
+      state_name        join2
+      state_type        join
+    state
+      state_name        end3
+      state_type        end
+    transition
+      departure_state   [*]
+      arrow     -->
+      arrival_state     choice1
+      string    from start\nto choice
+    transition
+      departure_state   choice1
+      arrow     -->
+      arrival_state     fork1
+      string    from choice\nto fork
+    transition
+      departure_state   choice1
+      arrow     -->
+      arrival_state     join2
+      string    from choice\nto join
+    transition
+      departure_state   choice1
+      arrow     -->
+      arrival_state     end3
+      string    from choice\nto end
+    transition
+      departure_state   fork1
+      arrow     --->
+      arrival_state     State1
+      string    from fork\nto state
+    transition
+      departure_state   fork1
+      arrow     -->
+      arrival_state     State2
+      string    from fork\nto state
+    transition
+      departure_state   State2
+      arrow     -->
+      arrival_state     join2
+      string    from state\nto join
+    transition
+      departure_state   State1
+      arrow     -->
+      arrival_state     [*]
+      string    from state\nto end
+    transition
+      departure_state   join2
+      arrow     -->
+      arrival_state     [*]
+      string    from join\nto end

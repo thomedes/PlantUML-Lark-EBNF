@@ -1,0 +1,33 @@
+@startuml
+State S1
+State S2
+S1 -[#DD00AA]-> S2
+S1 -left[#yellow]-> S3
+S1 -up[#red,dashed]-> S4
+S1 -right[dotted,#blue]-> S5
+
+X1 -[dashed]-> X2
+Z1 -[dotted]-> Z2
+Y1 -[#blue,bold]-> Y2
+@enduml
+
+////////////////////////////
+
+start
+  state_diagram
+    transition
+      departure_state   [*]
+      arrow     -up->
+      arrival_state     First
+    transition
+      departure_state   First
+      arrow     -right->
+      arrival_state     Second
+    transition
+      departure_state   Second
+      arrow     -->
+      arrival_state     Third
+    transition
+      departure_state   Third
+      arrow     -left->
+      arrival_state     Last

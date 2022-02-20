@@ -1,0 +1,48 @@
+@startuml
+state "Req(Id)" as ReqId <<sdlreceive>>
+state "Minor(Id)" as MinorId
+state "Major(Id)" as MajorId
+
+state c <<choice>>
+
+Idle --> ReqId
+ReqId --> c
+c --> MinorId : [Id <= 10]
+c --> MajorId : [Id > 10]
+@enduml
+
+////////////////////////////
+
+start
+  state_diagram
+    state
+      state_long_name   "Req(Id)"
+      state_name        ReqId
+      state_type        sdlreceive
+    state
+      state_long_name   "Minor(Id)"
+      state_name        MinorId
+    state
+      state_long_name   "Major(Id)"
+      state_name        MajorId
+    state
+      state_name        c
+      state_type        choice
+    transition
+      departure_state   Idle
+      arrow     -->
+      arrival_state     ReqId
+    transition
+      departure_state   ReqId
+      arrow     -->
+      arrival_state     c
+    transition
+      departure_state   c
+      arrow     -->
+      arrival_state     MinorId
+      string    [Id <= 10]
+    transition
+      departure_state   c
+      arrow     -->
+      arrival_state     MajorId
+      string    [Id > 10]
