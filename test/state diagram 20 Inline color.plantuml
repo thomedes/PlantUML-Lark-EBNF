@@ -1,0 +1,57 @@
+@startuml
+state CurrentSite #pink {
+    state HardwareSetup #lightblue {
+       state Site #brown
+        Site -[hidden]-> Controller
+        Controller -[hidden]-> Devices
+    }
+    state PresentationSetup{
+        Groups -[hidden]-> PlansAndGraphics
+    }
+    state Trends #FFFF77
+    state Schedule #magenta
+    state AlarmSupression
+}
+@enduml
+
+////////////////////////////
+
+start
+  state_diagram
+    state
+      state_name        CurrentSite
+      inline_color      #pink
+      state_block
+        state_diagram
+          state
+            state_name  HardwareSetup
+            inline_color        #lightblue
+            state_block
+              state_diagram
+                state
+                  state_name    Site
+                  inline_color  #brown
+                transition
+                  departure_state       Site
+                  arrow -[hidden]->
+                  arrival_state Controller
+                transition
+                  departure_state       Controller
+                  arrow -[hidden]->
+                  arrival_state Devices
+          state
+            state_name  PresentationSetup
+            state_block
+              state_diagram
+                transition
+                  departure_state       Groups
+                  arrow -[hidden]->
+                  arrival_state PlansAndGraphics
+          state
+            state_name  Trends
+            inline_color        #FFFF77
+          state
+            state_name  Schedule
+            inline_color        #magenta
+          state
+            state_name  AlarmSupression

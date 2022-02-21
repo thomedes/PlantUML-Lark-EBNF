@@ -1,0 +1,23 @@
+@startuml
+[*] -> State1
+State1 --> State2
+note on link
+  this is a state-transition note
+end note
+@enduml
+
+////////////////////////////
+
+start
+  state_diagram
+    transition
+      departure_state   [*]
+      arrow     ->
+      arrival_state     State1
+    transition
+      departure_state   State1
+      arrow     -->
+      arrival_state     State2
+    link_note
+      note_text
+  this is a state-transition note

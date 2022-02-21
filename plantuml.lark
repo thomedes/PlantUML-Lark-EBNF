@@ -63,28 +63,46 @@ _uml_content: ( sequence_diagram
              | archimate_diagram )
 
 arrow: ARROW
-ARROW:              \
-     "->"           \
-     | "--->"       \
-     | "-->"        \
-     | "-d->"       \
-     | "-do->"      \
-     | "-down->"    \
-     | "-l->"       \
-     | "-le->"      \
-     | "-left->"    \
-     | "-r->"       \
-     | "-ri->"      \
-     | "-right->"   \
-     | "-u->"       \
-     | "-up->"
+ARROW: /-[^>]*>/
 
 // ----------------------------------------------------------------------------
 //  State Diagram
 // ----------------------------------------------------------------------------
-state_diagram: ( transition | state | state_string | note | separator )*
+state_diagram: ( transition
+               | state
+               | state_string
+               | note
+               | link_note
+               | separator
+               | skinparam )*
 
-state: "state" (state_long_name "as")? state_name (string | state_block | "<<" state_type ">>")? _eol
+skinparam: "skinparam"i (_skinparamparam | skinparam_block )
+
+_skinparamparam: start_color
+               | end_color
+               | background_color
+               | border_color
+               | font_name
+
+skinparam_block: "state"i "{" _eol _skinparamparam+ "}" _eol
+
+start_color:        "StartColor"i       /\w+/     _eol
+end_color:          "EndColor"i         /\w+/     _eol
+background_color:   "BackgroundColor"i  /\w+/     _eol
+border_color:       "BorderColor"i      /\w+/     _eol
+font_name:          "FontName"i         /\w+/     _eol
+// AttributeFontColor blue
+// AttributeFontName serif
+// AttributeFontSize  9
+// AttributeFontStyle italic
+// FontColor red
+// FontSize 15
+// FontStyle bold
+
+
+state: "state"i (state_long_name "as")? state_name inline_color? (string | state_block | "<<" state_type ">>")? _eol
+
+inline_color: /#\w+/
 
 state_block: "{" _eol state_diagram "}"
 
@@ -113,7 +131,13 @@ STATE_TYPE:              \
      | "sdlreceive"
 
 state_long_name: QUOTED_STRING
-note: "note" side "of" STATE_NAME _eol /.+/ _eol "end" "note" _eol
+
+note: "note"i note_position state_name note_text _eol
+link_note: "note"i "on"i "link"i note_text
+note_position: side "of"i
+
+note_text: ":" FREE_TEXT
+         | /\n(\s+.+\n)+/ "end"i "note"i     // TODO: Fix this
 
 separator: separator_horizontal | separator_vertical
 separator_horizontal: "--"
@@ -131,8 +155,8 @@ GUARD: CNAME
 FREE_TEXT: /[^ \t\n][^\n]*[^ \t\n]?/
 QUOTED_STRING: /"[^"]*"/
 
-?side: "left" -> left
-     | "right" -> right
+?side: "left"i -> left
+     | "right"i -> right
 
 %import common.CNAME
 %import common.INT

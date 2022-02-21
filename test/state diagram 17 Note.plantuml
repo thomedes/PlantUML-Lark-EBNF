@@ -1,0 +1,40 @@
+@startuml
+
+[*] --> Active
+Active --> Inactive
+
+note left of Active : this is a short\nnote
+
+note right of Inactive
+  A note can also
+  be defined on
+  several lines
+end note
+
+@enduml
+
+////////////////////////////
+
+start
+  state_diagram
+    transition
+      departure_state   [*]
+      arrow     -->
+      arrival_state     Active
+    transition
+      departure_state   Active
+      arrow     -->
+      arrival_state     Inactive
+    note
+      note_position
+        left
+      state_name        Active
+      note_text this is a short\nnote
+    note
+      note_position
+        right
+      state_name        Inactive
+      note_text
+  A note can also
+  be defined on
+  several lines

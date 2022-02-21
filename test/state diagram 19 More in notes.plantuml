@@ -1,0 +1,54 @@
+@startuml
+
+[*] --> NotShooting
+
+state "Not Shooting State" as NotShooting {
+  state "Idle mode" as Idle
+  state "Configuring mode" as Configuring
+  [*] --> Idle
+  Idle --> Configuring : EvConfig
+  Configuring --> Idle : EvConfig
+}
+
+note right of NotShooting : This is a note on a composite state
+
+@enduml
+
+////////////////////////////
+
+start
+  state_diagram
+    transition
+      departure_state   [*]
+      arrow     -->
+      arrival_state     NotShooting
+    state
+      state_long_name   "Not Shooting State"
+      state_name        NotShooting
+      state_block
+        state_diagram
+          state
+            state_long_name     "Idle mode"
+            state_name  Idle
+          state
+            state_long_name     "Configuring mode"
+            state_name  Configuring
+          transition
+            departure_state     [*]
+            arrow       -->
+            arrival_state       Idle
+          transition
+            departure_state     Idle
+            arrow       -->
+            arrival_state       Configuring
+            string      EvConfig
+          transition
+            departure_state     Configuring
+            arrow       -->
+            arrival_state       Idle
+            string      EvConfig
+    note
+      note_position
+        right
+      state_name        NotShooting
+      note_text This is a note on a composite state

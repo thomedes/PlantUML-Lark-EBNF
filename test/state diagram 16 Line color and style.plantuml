@@ -15,19 +15,35 @@ Y1 -[#blue,bold]-> Y2
 
 start
   state_diagram
+    state
+      state_name        S1
+    state
+      state_name        S2
     transition
-      departure_state   [*]
-      arrow     -up->
-      arrival_state     First
+      departure_state   S1
+      arrow     -[#DD00AA]->
+      arrival_state     S2
     transition
-      departure_state   First
-      arrow     -right->
-      arrival_state     Second
+      departure_state   S1
+      arrow     -left[#yellow]->
+      arrival_state     S3
     transition
-      departure_state   Second
-      arrow     -->
-      arrival_state     Third
+      departure_state   S1
+      arrow     -up[#red,dashed]->
+      arrival_state     S4
     transition
-      departure_state   Third
-      arrow     -left->
-      arrival_state     Last
+      departure_state   S1
+      arrow     -right[dotted,#blue]->
+      arrival_state     S5
+    transition
+      departure_state   X1
+      arrow     -[dashed]->
+      arrival_state     X2
+    transition
+      departure_state   Z1
+      arrow     -[dotted]->
+      arrival_state     Z2
+    transition
+      departure_state   Y1
+      arrow     -[#blue,bold]->
+      arrival_state     Y2
